@@ -1,0 +1,13 @@
+/* frontend/src/components/StockTable.css */
+.stock-table {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .stock-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
