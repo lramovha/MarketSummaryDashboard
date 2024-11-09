@@ -2,17 +2,18 @@
 import React, { useEffect, useState } from 'react';
 import StockCard from './StockCard';
 
-const StockList = () => {
+function StockList() {
   const [assets, setAssets] = useState([]);
 
   useEffect(() => {
-    fetch('/api/assets/test')  // Using test endpoint
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched data from backend:", data);  // Debug log
-        setAssets(data);
+    fetch('/api/assets')
+      .then(response => response.json())
+      .then(data => {
+        // Check the data to ensure it's properly received
+        console.log("Fetched assets:", data);
+        setAssets(data);  // Make sure this line runs with correct data
       })
-      .catch((error) => console.error('Error fetching assets:', error));
+      .catch(error => console.error('Error fetching assets:', error));
   }, []);
 
   return (
@@ -22,6 +23,6 @@ const StockList = () => {
       ))}
     </div>
   );
-};
+}
 
 export default StockList;

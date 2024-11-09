@@ -1,4 +1,42 @@
-// src/components/MarketSummary.js
+// // src/components/MarketSummary.js
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+// import StockCard from "./StockCard";
+
+// const MarketSummary = () => {
+//   const [assets, setAssets] = useState([]);
+
+//   useEffect(() => {
+//     const fetchAssets = async () => {
+//       try {
+//         const response = await axios.get("http://localhost:8000/api/assets");
+//         setAssets(response.data);
+//       } catch (error) {
+//         console.error("Error fetching assets:", error);
+//       }
+//     };
+    
+//     fetchAssets();
+//   }, []);
+
+//   return (
+//     <div className="market-summary">
+//       <h2>Market Summary</h2>
+//       <div className="card-container">
+//         {assets.length > 0 ? (
+//           assets.map((asset) => (
+//             <StockCard key={asset.symbol} asset={asset} />
+//           ))
+//         ) : (
+//           <p>Loading...</p>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default MarketSummary;
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import StockCard from "./StockCard";
@@ -10,13 +48,13 @@ const MarketSummary = () => {
     const fetchAssets = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/assets");
-        setAssets(response.data);
+        setAssets(response.data); // Update the state with fetched data
       } catch (error) {
         console.error("Error fetching assets:", error);
       }
     };
     
-    fetchAssets();
+    fetchAssets(); // Call the API when the component mounts
   }, []);
 
   return (
@@ -28,7 +66,7 @@ const MarketSummary = () => {
             <StockCard key={asset.symbol} asset={asset} />
           ))
         ) : (
-          <p>Loading...</p>
+          <p>Loading...</p> // Display loading message while data is being fetched
         )}
       </div>
     </div>
@@ -36,5 +74,6 @@ const MarketSummary = () => {
 };
 
 export default MarketSummary;
+
 
 
