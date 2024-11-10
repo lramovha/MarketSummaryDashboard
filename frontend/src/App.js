@@ -1,5 +1,6 @@
 import React from "react";
 import MarketSummary from "./components/MarketSummary";
+import './styles/App.css'
 
 function App() {
   return (

@@ -40,6 +40,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import StockCard from "./StockCard";
+import '../styles/MarketSummary.css';
+
 
 const MarketSummary = () => {
   const [assets, setAssets] = useState([]);

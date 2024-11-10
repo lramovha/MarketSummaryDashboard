@@ -30,17 +30,17 @@ import '../styles/StockCard.css';
 function StockCard({ asset }) {
   const { symbol, name, price, change } = asset;
 
-  // Set the color based on change value
-  const priceColor = change >= 0 ? 'green' : 'red';  // Green for positive, red for negative
+  // Determine the change class based on positive or negative value
+  const changeClass = change >= 0 ? 'positive' : 'negative';
   const formattedChange = change !== undefined ? change.toFixed(2) : "0.00";  // Format change to two decimal places
 
   return (
     <div className="stock-card">
-      <h3>{name} ({symbol})</h3>
-      <p className="price" style={{ color: priceColor }}>
+      <h3 className="stock-name">{name} ({symbol})</h3>
+      <p className={`price ${changeClass}`}>
         Price: ${price.toFixed(2)}
       </p>
-      <p className={`change ${priceColor}`}>
+      <p className={`change ${changeClass}`}>
         Change: {formattedChange}%
       </p>
     </div>
