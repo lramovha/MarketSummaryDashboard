@@ -27,20 +27,19 @@
 import React from 'react';
 import '../styles/StockCard.css';
 
-function StockCard({ asset }) {
+function StockCard({ asset, onClick }) {
   const { symbol, name, price, change } = asset;
 
-  // Determine the change class based on positive or negative value
-  const changeClass = change >= 0 ? 'positive' : 'negative';
-  const formattedChange = change !== undefined ? change.toFixed(2) : "0.00";  // Format change to two decimal places
+  const priceColor = change >= 0 ? 'green' : 'red';
+  const formattedChange = change !== undefined ? change.toFixed(2) : "0.00";
 
   return (
-    <div className="stock-card">
-      <h3 className="stock-name">{name} ({symbol})</h3>
-      <p className={`price ${changeClass}`}>
+    <div className="stock-card" onClick={onClick}>
+      <h3>{name} ({symbol})</h3>
+      <p className="price" style={{ color: priceColor }}>
         Price: ${price.toFixed(2)}
       </p>
-      <p className={`change ${changeClass}`}>
+      <p className={`change ${priceColor}`}>
         Change: {formattedChange}%
       </p>
     </div>
@@ -48,6 +47,7 @@ function StockCard({ asset }) {
 }
 
 export default StockCard;
+
 
 
 

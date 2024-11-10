@@ -31,8 +31,10 @@
 import yfinance as yf
 from typing import List
 from app.models.asset import Asset, ChartData
+from fastapi import APIRouter, HTTPException
+import pandas as pd
 
-def get_stock_info(symbol):
+def get_stock_info(symbol: str):
     try:
         ticker = yf.Ticker(symbol)
         stock_info = ticker.info
@@ -40,9 +42,9 @@ def get_stock_info(symbol):
         return stock_info
     except Exception as e:
         print(f"Error fetching data for {symbol}: {e}")
-        return {}
+        return None
 
-def fetch_asset_data(symbol):
+def fetch_asset_data(symbol: str):
     stock_info = get_stock_info(symbol)
     if not stock_info:
         return {
@@ -56,17 +58,10 @@ def fetch_asset_data(symbol):
     price = stock_info.get('regularMarketPrice') or stock_info.get('currentPrice') or stock_info.get('previousClose', 0.0)
     previous_close = stock_info.get('previousClose')
 
-    # Log the values to verify correctness
-    print(f"{symbol} - regularMarketPrice/currentPrice: {price}, previousClose: {previous_close}")
-
     # Calculate change percentage if both fields are available
+    change = 0.0
     if previous_close and price:
         change = ((price - previous_close) / previous_close) * 100
-    else:
-        change = 0.0
-
-    # Log calculated change
-    print(f"Calculated change for {symbol}: {change}%")
 
     return {
         "symbol": symbol,
@@ -82,17 +77,15 @@ def fetch_assets_data(symbols: List[str]) -> List[Asset]:
         assets.append(fetch_asset_data(symbol))
     return assets
 
-
 def fetch_chart_data(symbol: str, period="1d", interval="5m") -> List[ChartData]:
     try:
         stock = yf.Ticker(symbol)
         hist = stock.history(period=period, interval=interval)
 
-        print(f"Fetched chart data for {symbol}: {hist}")  # Log the chart data
-
+        # Format data for the chart, converting the index to a readable timestamp
         return [
             ChartData(
-                time=str(row.name),
+                time=row.name.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting the timestamp to string
                 open=row["Open"],
                 high=row["High"],
                 low=row["Low"],
@@ -104,3 +97,13 @@ def fetch_chart_data(symbol: str, period="1d", interval="5m") -> List[ChartData]
     except Exception as e:
         print(f"Error fetching chart data for {symbol}: {e}")
         return []
+
+# FastAPI endpoint to fetch chart data
+router = APIRouter()
+
+@router.get("/chart_data/{symbol}")
+async def get_chart_data(symbol: str, period: str = "1d", interval: str = "5m"):
+    chart_data = fetch_chart_data(symbol, period, interval)
+    if not chart_data:
+        raise HTTPException(status_code=404, detail=f"Chart data not found for symbol: {symbol}")
+    return {"chartData": chart_data}

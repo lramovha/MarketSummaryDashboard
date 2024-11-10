@@ -27,7 +27,7 @@ router = APIRouter()
 @router.get("/", response_model=List[Asset])
 async def read_assets():
     # List of symbols to fetch
-    symbols = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NFLX", "META", "NVDA", "INTC", "SPY"]
+    symbols = ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN", "NFLX", "META", "NVDA", "INTC", "SPY", "V", "WMT", "GS", "JPM", "DIS", "CVX"]
     assets = fetch_assets_data(symbols)  # Fetch data for all assets
     if not assets:
         raise HTTPException(status_code=404, detail="Assets not found")
