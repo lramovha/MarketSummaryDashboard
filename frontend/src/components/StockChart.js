@@ -1,16 +1,22 @@
-// frontend/src/api/stockApi.js
-import axios from 'axios';
+import React from "react";
+import { Line } from "react-chartjs-2";
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const StockChart = ({ data }) => {
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: true },
+    },
+    scales: {
+      x: { title: { display: true, text: "Date" } },
+      y: { title: { display: true, text: "Price (USD)" } },
+    },
+  };
 
-export const getAssets = async () => {
-  const response = await axios.get(`${API_BASE_URL}/assets`);
-  return response.data;
+  return <Line data={data} options={options} />;
 };
 
-export const getChartData = async (symbol) => {
-  const response = await axios.get(`${API_BASE_URL}/chart`, { params: { symbol } });
-  return response.data;
-};
+export default StockChart;
 
 
