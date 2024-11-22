@@ -28,9 +28,16 @@ const MarketSummary = () => {
     fetchAssets();
   }, []);
 
-  const handleCardClick = (asset) => {
+  const handleCardClick = async (asset) => {
     setSelectedAsset(asset); // Set the selected asset when a card is clicked
+    try {
+      const response = await axios.get(`http://localhost:8000/api/assets/${asset.symbol}`);
+      setSelectedAsset(response.data); // Set the selected asset with fetched data
+    } catch (error) {
+      console.error(`Error fetching data for ${asset.symbol}:`, error.message);
+    }
   };
+  
 
   const closeModal = () => {
     setSelectedAsset(null); // Close the modal
