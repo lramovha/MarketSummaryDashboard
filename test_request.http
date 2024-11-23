@@ -1,0 +1,1 @@
+GET http://127.0.0.1:8000/chart_data/INTC?period=1d&interval=5m

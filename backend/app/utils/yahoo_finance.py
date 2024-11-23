@@ -53,6 +53,9 @@ def fetch_chart_data(symbol: str, period="1d", interval="5m") -> List[ChartData]
         stock = yf.Ticker(symbol)
         hist = stock.history(period=period, interval=interval)
 
+        # Print the historical data for debugging
+        print(f"Historical data for {symbol}: {hist}")
+
         # Format data for the chart, converting the index to a readable timestamp
         return [
             ChartData(
@@ -65,10 +68,13 @@ def fetch_chart_data(symbol: str, period="1d", interval="5m") -> List[ChartData]
             )
             for row in hist.itertuples()
         ]
+    
     except Exception as e:
         print(f"Error fetching chart data for {symbol}: {e}")
         return []
     print(f"Historical data for {symbol}: {hist}")
+    
+    print(f"Chart data for {symbol}: {chart_data}")
 
 
 # FastAPI endpoint to fetch chart data
